@@ -35,7 +35,8 @@ export class Light {
     private sendAndRecieve = async <T>(data: any) => new Promise<T>(async (res, _) => {
         const socket = await this.init((socket: Bun.udp.Socket<"buffer">, data: Buffer, port: number, address: string) => {
             socket.close();
-            res(JSON.parse(data.toString()) as T);
+            const payload = JSON.parse(data.toString());
+            res(payload.result as T);
         });
         socket.send(JSON.stringify(data), this.port, this.ip);
     });
